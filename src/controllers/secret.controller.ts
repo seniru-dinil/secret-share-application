@@ -11,6 +11,7 @@ interface CreateSecrteHandlerBody {
   message: string;
   password: string;
 }
+
 export const createSecrteHandler = async (
   req: Request<{}, {}, CreateSecrteHandlerBody>,
   res: Response,
