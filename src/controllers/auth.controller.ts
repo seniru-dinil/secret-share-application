@@ -2,7 +2,9 @@ import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { createAccount, login } from "../services/auth.service";
 import { configDotenv } from "dotenv";
+const JWT_SECRET = process.env.JWT_SECRET;
 configDotenv();
+
 const signupSchema = z
   .object({
     email: z.string().email({ message: "invalid email" }),
@@ -20,8 +22,6 @@ const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 interface SignupRequestBody {
   email: string;
@@ -58,10 +58,13 @@ export const loginHandler = async (
       ...req.body,
     })
   );
+  console.log(token);
   if (token) {
-    return res.status(200).json({
+    res.status(200).json({
       token: token,
     });
+    return;
+  } else {
+    next("ivalid token");
   }
-  next("ivalid token");
 };

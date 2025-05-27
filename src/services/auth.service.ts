@@ -1,6 +1,8 @@
 import { connection } from "../config/db";
 import bcrypt from "bcrypt";
+import { configDotenv } from "dotenv";
 import jwt from "jsonwebtoken";
+configDotenv();
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
 interface RequestProps {
@@ -43,6 +45,7 @@ export const login = async ({ email, password }: RequestProps) => {
     );
 
     const user = rows[0];
+
     if (!user) {
       return;
     }
@@ -55,8 +58,9 @@ export const login = async ({ email, password }: RequestProps) => {
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "1h",
     });
+
     return token;
   } catch (error) {
-    return;
+    return null;
   }
 };

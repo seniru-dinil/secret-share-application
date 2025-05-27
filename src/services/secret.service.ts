@@ -26,3 +26,19 @@ export const createSecret = async ({
 
   return { url: `/secret/${token}` };
 };
+
+export const viewSecret = async (token: string) => {
+  try {
+    const [rows]: any = await pool.query(
+      `SELECT * FROM secrets WHERE token = ? AND isViewed = false`,
+      [token]
+    );
+    if (rows.length === 0) {
+      return null;
+    }
+    return rows[0];
+  } catch (error) {
+    console.error("Error retrieving secret:", error);
+    return null;
+  }
+};
