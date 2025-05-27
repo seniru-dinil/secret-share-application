@@ -10,6 +10,13 @@ interface RequestProps {
   password: string;
 }
 
+interface DecodedToken {
+  userId: number;
+  email: string;
+  iat: number;
+  exp: number;
+}
+
 export const createAccount = async ({ email, password }: RequestProps) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,6 +67,16 @@ export const login = async ({ email, password }: RequestProps) => {
 
     return token;
   } catch (error) {
+    return null;
+  }
+};
+
+export const getUserFromToken = (token: string): DecodedToken | null => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as DecodedToken;
+    return decoded;
+  } catch (error) {
+    console.error("Invalid token:", error);
     return null;
   }
 };

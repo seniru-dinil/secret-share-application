@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { createAccount, login } from "../services/auth.service";
 import { configDotenv } from "dotenv";
-const JWT_SECRET = process.env.JWT_SECRET;
+
 configDotenv();
 
 const signupSchema = z

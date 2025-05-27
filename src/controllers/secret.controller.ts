@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { createSecret, viewSecret } from "../services/secret.service";
+import { getUserFromToken } from "../services/auth.service";
+import jwt from "jsonwebtoken";
 
 const secretSchema = z.object({
   message: z.string(),
@@ -21,10 +23,20 @@ export const createSecrteHandler = async (
     const request = secretSchema.parse({
       ...req.body,
     });
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      next("Unauthorized: Missing token");
+    }
+
+    const token = authHeader ? authHeader.split(" ")[1] : undefined;
+
+    let userId: number = getUserFromToken(token || "")?.userId || -1;
+
     await createSecret({
       message: request.message,
       password: request.password,
-      userId: 1,
+      userId,
     });
     res.status(200).json({ message: "secret created" });
   } catch (error) {
