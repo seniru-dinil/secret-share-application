@@ -20,7 +20,7 @@ interface SignupRequestBody {
   confirmPassword: string;
 }
 
-export const signupHanlder = async (
+export const signupHandler = async (
   req: Request<{}, {}, SignupRequestBody>,
   res: Response,
   next: NextFunction
