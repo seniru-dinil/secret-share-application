@@ -19,7 +19,7 @@ export const createSecret = async ({
   const createdAt = new Date();
 
   await pool.query(
-    `INSERT INTO secrets (message, password, token, user_id, createdAt, isViewed)
+    `INSERT INTO secrets (message, password, token, userId, createdAt, isViewed)
      VALUES (?, ?, ?, ?, ?, false)`,
     [message, hashedPassword, token, userId, createdAt]
   );

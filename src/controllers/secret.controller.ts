@@ -2,7 +2,6 @@ import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { createSecret, viewSecret } from "../services/secret.service";
 import { getUserFromToken } from "../services/auth.service";
-import jwt from "jsonwebtoken";
 
 const secretSchema = z.object({
   message: z.string(),
