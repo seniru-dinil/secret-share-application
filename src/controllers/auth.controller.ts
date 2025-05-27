@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
+import { createAccount } from "../services/auth.service";
 
 const signupSchema = z
   .object({
@@ -29,10 +30,23 @@ export const signupHandler = async (
     const request = signupSchema.parse({
       ...req.body,
     });
+
+    const bool = await createAccount(request);
     res.status(200).json({
-      message: "user registration success",
+      message: bool ? "user creation successfull" : "error",
     });
     console.log(request);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const loginHandler = async (
+  req: Request<{}, {}, SignupRequestBody>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
   } catch (error) {
     next(error);
   }
