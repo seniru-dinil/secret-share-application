@@ -5,8 +5,10 @@ import authRoutes from "./routes/auth.route";
 import { secretRoutes } from "./routes/secret.route";
 import { configDotenv } from "dotenv";
 configDotenv();
+
 const app = express();
 const PORT = process.env.PORT || 5001;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
