@@ -80,9 +80,11 @@ export const loginHandler = async (
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "1h",
     });
-
-    console.log({ token });
+    res.status(200).json({
+      token: { token },
+    });
   } catch (error) {
+    next("error");
     console.error("Login error:", error);
   }
 };
