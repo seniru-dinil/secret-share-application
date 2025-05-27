@@ -40,8 +40,9 @@ export const signupHandler = async (
     });
 
     const bool = await createAccount(request);
+
     res.status(200).json({
-      message: bool ? "user creation successfull" : "error",
+      message: bool ? "successfull!" : "error",
     });
   } catch (error) {
     next(error);

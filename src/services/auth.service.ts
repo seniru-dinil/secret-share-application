@@ -17,10 +17,9 @@ export const createAccount = async ({ email, password }: RequestProps) => {
       "INSERT INTO users (email, password) VALUES (?, ?)",
       [email, hashedPassword]
     );
-    return result > 0;
+    return true;
   } catch (error) {
-    console.error("Error creating account:", error);
-    throw error;
+    throw new Error("error");
   }
 };
 
