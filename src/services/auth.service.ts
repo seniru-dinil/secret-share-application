@@ -1,15 +1,14 @@
 import { connection } from "../config/db";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
-interface CreateAccountProps {
+const JWT_SECRET = process.env.JWT_SECRET || "";
+interface RequestProps {
   email: string;
   password: string;
 }
 
-export const createAccount = async ({
-  email,
-  password,
-}: CreateAccountProps) => {
+export const createAccount = async ({ email, password }: RequestProps) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await connection.query(
@@ -33,5 +32,31 @@ export const checkUser = async (email: string) => {
   } catch (error) {
     console.error("Error checking user:", error);
     throw error;
+  }
+};
+
+export const login = async ({ email, password }: RequestProps) => {
+  try {
+    const [rows]: any = await connection.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email]
+    );
+
+    const user = rows[0];
+    if (!user) {
+      return;
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return;
+    }
+
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    return token;
+  } catch (error) {
+    return;
   }
 };

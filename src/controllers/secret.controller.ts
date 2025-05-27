@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { Request, Response, NextFunction } from "express";
 import { createSecret } from "../services/secret.service";
-import { checkUser } from "../services/auth.service";
 
 const secretSchema = z.object({
   message: z.string(),
