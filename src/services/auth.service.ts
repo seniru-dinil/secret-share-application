@@ -11,7 +11,7 @@ export const createAccount = async ({
   password,
 }: CreateAccountProps) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 salt rounds
+    const hashedPassword = await bcrypt.hash(password, 10);
     const [result] = await connection.query(
       "INSERT INTO users (email, password) VALUES (?, ?)",
       [email, hashedPassword]

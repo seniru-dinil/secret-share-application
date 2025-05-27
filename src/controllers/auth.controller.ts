@@ -46,14 +46,13 @@ export const signupHandler = async (
     res.status(200).json({
       message: bool ? "user creation successfull" : "error",
     });
-    console.log(request);
   } catch (error) {
     next(error);
   }
 };
 
 export const loginHandler = async (
-  req: Request<{}, {}, SignupRequestBody>,
+  req: Request<{}, {}, { email: string; password: string }>,
   res: Response,
   next: NextFunction
 ) => {
